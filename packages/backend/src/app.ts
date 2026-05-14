@@ -1,7 +1,7 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import express from 'express';
-import cors from 'cors';
+import cors, { type CorsOptions } from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import { healthRouter } from './routes/health.js';
@@ -10,10 +10,22 @@ import { sessionsRouter } from './routes/sessions.js';
 import { heatmapRouter } from './routes/heatmap.js';
 import { notFound, errorHandler } from './errors.js';
 
+function corsOrigin(): CorsOptions['origin'] {
+  const raw = (process.env.CORS_ORIGINS ?? '*').trim();
+  if (raw === '*' || raw === '') return '*';
+  const allowed = new Set(
+    raw.split(',').map((s) => s.trim().replace(/\/+$/, '')).filter(Boolean),
+  );
+  return (origin, cb) => {
+    if (!origin) return cb(null, true);
+    cb(null, allowed.has(origin.replace(/\/+$/, '')));
+  };
+}
+
 export function createApp() {
   const app = express();
   app.use(helmet());
-  app.use(cors({ origin: (process.env.CORS_ORIGINS ?? '*').split(','), credentials: false }));
+  app.use(cors({ origin: corsOrigin(), credentials: false }));
   app.use(express.json({ limit: '256kb', type: ['application/json', 'text/plain'] }));
 
   const __filename = fileURLToPath(import.meta.url);
