@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Test-Path \"D:\\\\causal\"; if \\(Test-Path \"D:\\\\causal\"\\) { \\(Get-ChildItem \"D:\\\\causal\" -Force | Measure-Object\\).Count })"
+    ]
+  }
+}
