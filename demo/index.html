@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Demo Shop — Home</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 960px; margin: 2rem auto; padding: 1rem; color: #1a1a1a; }
+  header { display: flex; justify-content: space-between; align-items: center; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 2rem; }
+  .card { border: 1px solid #ddd; border-radius: 8px; padding: 1rem; }
+  .card img { width: 100%; aspect-ratio: 4/3; background: #eee; display:block; border-radius:6px; }
+  a { color: #2563eb; text-decoration: none; }
+</style>
+</head>
+<body>
+  <header><h1>Demo Shop</h1><nav><a href="/demo/cart.html">Cart</a></nav></header>
+  <p>This is a demo storefront wired to the CausalFunnel tracker. Click around — events flow to the dashboard.</p>
+  <section class="grid">
+    <div class="card"><img alt=""><h3>Aurora Lamp</h3><p>$49</p><a href="/demo/product.html?id=1">View</a></div>
+    <div class="card"><img alt=""><h3>Glass Kettle</h3><p>$79</p><a href="/demo/product.html?id=2">View</a></div>
+    <div class="card"><img alt=""><h3>Wool Throw</h3><p>$95</p><a href="/demo/product.html?id=3">View</a></div>
+  </section>
+  <script src="/tracker.js" data-endpoint="/api/events"></script>
+</body>
+</html>

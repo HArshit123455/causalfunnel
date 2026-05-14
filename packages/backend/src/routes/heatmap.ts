@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { type PipelineStage } from 'mongoose';
 import { EventModel } from '../models/event.js';
 import { errorEnvelope } from '../errors.js';
 
@@ -14,7 +15,7 @@ heatmapRouter.get('/api/heatmap', async (req, res, next) => {
     const total = await EventModel.countDocuments({ path, type: 'click' });
     const ratio = total > MAX_POINTS ? total / MAX_POINTS : 1;
 
-    const pipeline: object[] = [
+    const pipeline: PipelineStage[] = [
       { $match: { path, type: 'click' } },
       { $project: { _id: 0, x: 1, y: 1, pageX: 1, pageY: 1, viewportW: 1, viewportH: 1 } },
     ];

@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Demo Shop — Cart</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 720px; margin: 2rem auto; padding: 1rem; }
+  ul { list-style: none; padding: 0; }
+  li { border-bottom: 1px solid #eee; padding: .75rem 0; display: flex; justify-content: space-between; }
+  button { padding: .75rem 1rem; border-radius: 6px; border: 1px solid #2563eb; background: #2563eb; color:white; cursor:pointer; margin-top:1rem; }
+</style>
+</head>
+<body>
+  <p><a href="/demo/">← Back</a></p>
+  <h1>Your cart</h1>
+  <ul>
+    <li>Aurora Lamp <strong>$49</strong></li>
+    <li>Glass Kettle <strong>$79</strong></li>
+  </ul>
+  <p>Total: <strong>$128</strong></p>
+  <button id="checkout">Checkout</button>
+  <script>
+    document.getElementById('checkout').addEventListener('click', () => alert('Thanks!'));
+  </script>
+  <script src="/tracker.js" data-endpoint="/api/events"></script>
+</body>
+</html>

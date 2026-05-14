@@ -1,3 +1,5 @@
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -13,6 +15,13 @@ export function createApp() {
   app.use(helmet());
   app.use(cors({ origin: (process.env.CORS_ORIGINS ?? '*').split(','), credentials: false }));
   app.use(express.json({ limit: '256kb', type: ['application/json', 'text/plain'] }));
+
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
+  const trackerDir = path.resolve(__dirname, '../../tracker/dist');
+  const demoDir = path.resolve(__dirname, '../../../demo');
+  app.use('/tracker.js', express.static(path.join(trackerDir, 'tracker.js')));
+  app.use('/demo', express.static(demoDir));
 
   const eventsLimiter = rateLimit({
     windowMs: 60 * 1000, limit: 100, standardHeaders: true, legacyHeaders: false,
