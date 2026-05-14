@@ -12,7 +12,7 @@ export function createApp() {
   const app = express();
   app.use(helmet());
   app.use(cors({ origin: (process.env.CORS_ORIGINS ?? '*').split(','), credentials: false }));
-  app.use(express.json({ limit: '256kb' }));
+  app.use(express.json({ limit: '256kb', type: ['application/json', 'text/plain'] }));
 
   const eventsLimiter = rateLimit({
     windowMs: 60 * 1000, limit: 100, standardHeaders: true, legacyHeaders: false,
