@@ -4,11 +4,12 @@ A minimal user-analytics platform: a JS tracker, a Node/Express/Mongo backend, a
 
 ## Live demo
 
-- Dashboard: `https://<your-vercel-url>`
-- Demo storefront (instrumented): `https://<your-render-url>/demo/`
-- Backend API: `https://<your-render-url>/api`
+- **Dashboard:** https://causalfunnel-dashboard-3obx.vercel.app
+- **Demo storefront (instrumented):** https://causalfunnel-f5cw.onrender.com/demo/
+- **Backend API:** https://causalfunnel-f5cw.onrender.com/api
+- **Health check:** https://causalfunnel-f5cw.onrender.com/healthz
 
-> Update these links once deployed.
+Click around the demo storefront for a few seconds, then open the dashboard — you'll see the session appear in the Sessions list and your clicks land on the Heatmap. The Render backend is on the free tier, so the first request after ~15 min of inactivity cold-starts (~30s).
 
 ## Architecture
 
@@ -41,8 +42,8 @@ A minimal user-analytics platform: a JS tracker, a Node/Express/Mongo backend, a
 ## Local setup
 
 ```bash
-git clone https://github.com/<you>/causalfunnel-analytics.git
-cd causalfunnel-analytics
+git clone https://github.com/HArshit123455/causalfunnel.git
+cd causalfunnel
 cp .env.example .env
 
 docker compose up -d mongo
@@ -94,9 +95,14 @@ Backend tests run against an in-memory MongoDB via `mongodb-memory-server` — n
 
 **MongoDB Atlas** — Create a free M0 cluster, add a database user, allowlist `0.0.0.0/0` for the demo (note in trade-offs below), copy the connection URI.
 
-**Backend on Render** — New web service from this repo; build via `packages/backend/Dockerfile`; root context is the repo root. Env vars: `MONGODB_URI`, `CORS_ORIGINS=https://<your-vercel-url>`, `NODE_ENV=production`. A `render.yaml` is included for reference.
+**Backend on Render** — New web service from this repo; build via `packages/backend/Dockerfile`; root context is the repo root. Env vars: `MONGODB_URI`, `CORS_ORIGINS=https://<your-vercel-url>` (no trailing slash — though the server tolerates one), `NODE_ENV=production`. A `render.yaml` is included for reference.
 
-**Dashboard on Vercel** — Import the repo; set root directory to `packages/dashboard`; env var `NEXT_PUBLIC_API_URL=https://<your-render-url>`. Build command and output directory use Vercel's Next.js defaults.
+**Dashboard on Vercel** — Import the repo; set root directory to `packages/dashboard`; env var `NEXT_PUBLIC_API_URL=https://<your-render-url>`. Build command and output directory use Vercel's Next.js defaults. `NEXT_PUBLIC_*` vars are baked at build time — redeploy after changing them.
+
+**Deploy order (breaks the chicken-and-egg):**
+1. Deploy Render first with `CORS_ORIGINS=*` so it boots before you have a Vercel URL.
+2. Deploy Vercel pointing `NEXT_PUBLIC_API_URL` at the Render URL.
+3. Tighten Render: set `CORS_ORIGINS=https://<vercel-url>`. (The backend normalizes whitespace and trailing slashes, so either form works.)
 
 ## Assumptions and trade-offs
 
