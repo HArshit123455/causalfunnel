@@ -4,8 +4,10 @@
   "version": "0.1.0",
   "workspaces": ["packages/*"],
   "scripts": {
+    "predev": "npm run build -w @causalfunnel/shared",
     "dev": "turbo run dev --parallel",
     "build": "turbo run build",
+    "pretest": "npm run build -w @causalfunnel/shared",
     "test": "turbo run test",
     "lint": "turbo run lint",
     "typecheck": "turbo run typecheck"

@@ -9,6 +9,7 @@ COPY packages/shared  packages/shared
 COPY packages/tracker packages/tracker
 COPY packages/backend packages/backend
 COPY demo demo
+RUN npm run build -w @causalfunnel/shared
 RUN npm run build -w @causalfunnel/tracker
 RUN npm run build -w @causalfunnel/backend
 
