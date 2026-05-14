@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import { healthRouter } from './routes/health.js';
 import { eventsRouter } from './routes/events.js';
+import { sessionsRouter } from './routes/sessions.js';
 import { notFound, errorHandler } from './errors.js';
 
 export function createApp() {
@@ -20,6 +21,7 @@ export function createApp() {
 
   app.use(healthRouter);
   app.use(eventsRouter);
+  app.use(sessionsRouter);
 
   app.use(notFound);
   app.use(errorHandler);
